@@ -136,6 +136,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
 
         # Process predictions
+        output_detection = ''
         for i, det in enumerate(pred):  # per image
             seen += 1
             if webcam:  # batch_size >= 1
@@ -148,7 +149,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
             save_path = str(save_dir / p.name)  # im.jpg
             txt_path = str(save_dir / 'labels' / p.stem) + ('' if dataset.mode == 'image' else f'_{frame}')  # im.txt
             s += '%gx%g ' % im.shape[2:]  # print string
-            # print(s) # Checkpoint adding each result of type of object
+            # Checkpoint adding each result of type of object
             
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
@@ -161,7 +162,17 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-                    # print(s) # Checkpoint adding each result of type of object
+                    output_detection += f"{names[int(c)]} "  # add to string
+                    # LOGGER.info(output_detection)
+                    # Checkpoint adding each result of type of object
+
+                # Custom input into file
+                saving_txt_detection_location = os.getcwd()
+                saving_txt_detection_location += '\\Main-Image-Captured\\result.txt'
+                # LOGGER.info(saving_txt_detection_location)
+                result_file = open(saving_txt_detection_location,"w")
+                result_file.write(output_detection)
+                result_file.close()
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -214,6 +225,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
+
 
 
 def parse_opt():
