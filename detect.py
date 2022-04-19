@@ -167,6 +167,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     # Checkpoint adding each result of type of object
 
                 # Custom input into file
+                # TODO add param to easier multi device
                 saving_txt_detection_location = os.getcwd()
                 saving_txt_detection_location += '\\Main-Image-Captured\\result.txt'
                 # LOGGER.info(saving_txt_detection_location)
