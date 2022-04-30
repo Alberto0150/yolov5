@@ -74,6 +74,8 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
+        # Custom parse argument
+        custom_report_destination = ROOT,
         ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -82,6 +84,8 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
     webcam = source.isnumeric() or source.endswith('.txt') or (is_url and not is_file)
     if is_url and is_file:
         source = check_file(source)  # download
+
+    custom_destination = str(custom_report_destination)
 
     # Directories
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
@@ -167,9 +171,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     # Checkpoint adding each result of type of object
 
                 # Custom input into file
-                # TODO add param to easier multi device
-                saving_txt_detection_location = os.getcwd()
-                saving_txt_detection_location += '\\Main-Image-Captured\\result.txt'
+                saving_txt_detection_location = os.getcwd() + '\\Main-Image-Captured\\'+custom_destination+'-result.txt'
                 # LOGGER.info(saving_txt_detection_location)
                 result_file = open(saving_txt_detection_location,"w")
                 result_file.write(output_detection)
@@ -257,6 +259,9 @@ def parse_opt():
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
+    # Custom parser argument
+    parser.add_argument('--custom-report-destination', type=str, default=ROOT, help='name for destination file')
+
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
     print_args(FILE.stem, opt)
