@@ -85,7 +85,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
     if is_url and is_file:
         source = check_file(source)  # download
 
-    custom_destination = str(custom_report_destination)
+    custom_IP_destination = str(custom_report_destination)
 
     # Directories
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
@@ -171,7 +171,7 @@ def run(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                     # Checkpoint adding each result of type of object
 
                 # Custom input into file
-                saving_txt_detection_location = os.getcwd() + '\\Main-Image-Captured\\'+custom_destination+'-result.txt'
+                saving_txt_detection_location = 'D:\\Coding-Tugas-Akhir\\Main-Image-Captured\\'+custom_IP_destination+'-result.txt'
                 # LOGGER.info(saving_txt_detection_location)
                 result_file = open(saving_txt_detection_location,"w")
                 result_file.write(output_detection)
